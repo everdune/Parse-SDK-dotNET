@@ -105,6 +105,14 @@ namespace Parse.Internal {
           if (t.Exception.InnerException is WebException) {
             var webException = t.Exception.InnerException as WebException;
             response = (HttpWebResponse)webException.Response;
+            // BEGIN FIX Everdune: response can be null
+            if (response == null) {
+              TaskCompletionSource<Tuple<HttpStatusCode, string>> tcs = new TaskCompletionSource<Tuple<HttpStatusCode, string>>();
+              tcs.TrySetException(webException);
+
+              return tcs.Task;
+            }
+            // END FIX Everdune: response can be null
           } else {
             TaskCompletionSource<Tuple<HttpStatusCode, string>> tcs = new TaskCompletionSource<Tuple<HttpStatusCode, string>>();
             tcs.TrySetException(t.Exception);
