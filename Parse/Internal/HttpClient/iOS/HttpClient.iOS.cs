@@ -42,6 +42,14 @@ namespace Parse.Internal
 
         private NetHttpClient client;
 
+        public NetHttpClient ExposedHttpClient
+        {
+            get
+            {
+                return this.client;
+            }
+        }
+
         public Task<Tuple<HttpStatusCode, string>> ExecuteAsync(HttpRequest httpRequest,
             IProgress<ParseUploadProgressEventArgs> uploadProgress,
             IProgress<ParseDownloadProgressEventArgs> downloadProgress,

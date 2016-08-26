@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using NetHttpClient = System.Net.Http.HttpClient;
+
 namespace Parse {
   /// <summary>
   /// ParseClient contains static functions that handle global
@@ -61,6 +63,7 @@ namespace Parse {
         throw new InvalidOperationException("You must include a reference to a platform-specific Parse library.");
       }
       platformHooks = Activator.CreateInstance(platformHookType) as IPlatformHooks;
+      exposedHttpClient = platformHooks.HttpClient.ExposedHttpClient;
       commandRunner = new ParseCommandRunner(platformHooks.HttpClient);
       versionString = "net-" + platformHooks.SDKName + Version;
     }
@@ -85,6 +88,16 @@ namespace Parse {
     /// The current configuration that parse has been initialized with.
     /// </summary>
     public static Configuration CurrentConfiguration { get; internal set; }
+
+    private static readonly NetHttpClient exposedHttpClient;
+    /// <summary>
+    /// The exposed .NET Http Client.
+    /// </summary>
+    public static NetHttpClient ExposedHttpClient
+    {
+        get { return exposedHttpClient; }
+    }
+
     internal static string MasterKey { get; set; }
 
     internal static Version Version {

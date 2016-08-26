@@ -5,6 +5,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
+using NetHttpClient = System.Net.Http.HttpClient;
+
+
 namespace Parse.Internal {
   interface IHttpClient {
     /// <summary>
@@ -20,5 +23,7 @@ namespace Parse.Internal {
         IProgress<ParseUploadProgressEventArgs> uploadProgress,
         IProgress<ParseDownloadProgressEventArgs> downloadProgress,
         CancellationToken cancellationToken);
+
+    NetHttpClient ExposedHttpClient { get; }
   }
 }
